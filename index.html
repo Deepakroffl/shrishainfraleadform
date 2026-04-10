@@ -162,6 +162,11 @@
             to { transform: rotate(360deg); }
         }
 
+        /* Hide iframe */
+        #hidden_iframe {
+            display: none;
+        }
+
         /* Responsive */
         @media (max-width: 600px) {
             .form-container {
@@ -179,7 +184,11 @@
         <h2>Get In Touch</h2>
         <p class="subtitle">Fill out the form below and we'll get back to you soon!</p>
         
-        <form id="leadForm">
+        <form id="leadForm" 
+              action="https://script.google.com/macros/s/AKfycbzOuCcijrCfZBuqDzBWp3qSrBEZCqBUfQVz4CWGHWF91iaEw-YSpu1oCtghe6Q7iQp2/exec" 
+              method="POST"
+              target="hidden_iframe">
+            
             <div class="form-group">
                 <label for="name">Full Name <span>*</span></label>
                 <input 
@@ -221,6 +230,9 @@
             
             <div id="message" class="message"></div>
         </form>
+
+        <!-- Hidden iframe to handle form submission -->
+        <iframe name="hidden_iframe" id="hidden_iframe"></iframe>
     </div>
 
     <script>
@@ -229,32 +241,20 @@
         const submitBtn = document.getElementById('submitBtn');
         const btnText = document.getElementById('btnText');
         
-        // Replace with your Google Apps Script URL
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzOuCcijrCfZBuqDzBWp3qSrBEZCqBUfQVz4CWGHWF91iaEw-YSpu1oCtghe6Q7iQp2/exec';
-        
-        form.addEventListener('submit', e => {
-            e.preventDefault();
-            
+        // Handle form submission
+        form.addEventListener('submit', function(e) {
             // Disable button and show loading
             submitBtn.disabled = true;
             btnText.innerHTML = '<span class="loading"></span> Submitting...';
             message.style.display = 'none';
             
-            // Get form data
-            const formData = new FormData(form);
-            const params = new URLSearchParams(formData).toString();
-            
-            // Use GET request with URL parameters
-            fetch(scriptURL + '?' + params, {
-                method: 'GET',
-                redirect: 'follow'
-            })
-            .then(response => response.text())
-            .then(data => {
-                console.log('Response:', data); // For debugging
+            // Show success message after a short delay
+            setTimeout(function() {
                 message.textContent = '✓ Success! Your information has been submitted.';
                 message.className = 'message success';
                 message.style.display = 'block';
+                
+                // Reset form
                 form.reset();
                 
                 // Reset button
@@ -265,17 +265,7 @@
                 setTimeout(() => {
                     message.style.display = 'none';
                 }, 5000);
-            })
-            .catch(error => {
-                console.error('Error:', error); // For debugging
-                message.textContent = '✗ Error! Please try again or contact support.';
-                message.className = 'message error';
-                message.style.display = 'block';
-                
-                // Reset button
-                submitBtn.disabled = false;
-                btnText.textContent = 'Submit Form';
-            });
+            }, 1000);
         });
 
         // Real-time validation feedback
