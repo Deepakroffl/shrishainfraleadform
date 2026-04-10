@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lead Capture Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1E1051 0%, #2d1a75 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .form-container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 500px;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            text-align: center;
+            color: #1E1051;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #1E1051;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        label span {
+            color: #0BA039;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #0BA039;
+            box-shadow: 0 0 0 3px rgba(11, 160, 57, 0.1);
+        }
+
+        input::placeholder {
+            color: #aaa;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #0BA039 0%, #089c30 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #089c30 0%, #067a26 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(11, 160, 57, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+            font-weight: 500;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .success {
+            background-color: #d4f4dd;
+            color: #0BA039;
+            border: 1px solid #0BA039;
+        }
+
+        .error {
+            background-color: #ffe6e6;
+            color: #d32f2f;
+            border: 1px solid #d32f2f;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .form-container {
+                padding: 30px 20px;
+            }
+            
+            h2 {
+                font-size: 24px;
+            }
+        }
+
+        /* Icon styles */
+        .icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #1E1051;
+            opacity: 0.5;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Get In Touch</h2>
+        <p class="subtitle">Fill out the form below and we'll get back to you soon!</p>
+        
+        <form id="leadForm">
+            <div class="form-group">
+                <label for="name">Full Name <span>*</span></label>
+                <input 
+                    type="text" 
+                    id="name" 
+                    name="name" 
+                    placeholder="Enter your full name"
+                    required
+                    minlength="2"
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address <span>*</span></label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    placeholder="your.email@example.com"
+                    required
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">Phone Number <span>*</span></label>
+                <input 
+                    type="tel" 
+                    id="phone" 
+                    name="phone" 
+                    placeholder="+1 (555) 000-0000"
+                    required
+                    pattern="[0-9+\-\s()]+"
+                    minlength="10"
+                >
+            </div>
+            
+            <button type="submit" id="submitBtn">
+                <span id="btnText">Submit Form</span>
+            </button>
+            
+            <div id="message" class="message"></div>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('leadForm');
+        const message = document.getElementById('message');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        
+        // ⚠️ REPLACE THIS WITH YOUR GOOGLE APPS SCRIPT URL
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzOuCcijrCfZBuqDzBWp3qSrBEZCqBUfQVz4CWGHWF91iaEw-YSpu1oCtghe6Q7iQp2/exec';
+        
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            btnText.innerHTML = '<span class="loading"></span> Submitting...';
+            message.style.display = 'none';
+            
+            const formData = new FormData(form);
+            
+            fetch(scriptURL, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                message.textContent = '✓ Success! Your information has been submitted.';
+                message.className = 'message success';
+                message.style.display = 'block';
+                form.reset();
+                
+                // Reset button
+                submitBtn.disabled = false;
+                btnText.textContent = 'Submit Form';
+                
+                // Hide message after 5 seconds
+                setTimeout(() => {
+                    message.style.display = 'none';
+                }, 5000);
+            })
+            .catch(error => {
+                message.textContent = '✗ Error! Please try again or contact support.';
+                message.className = 'message error';
+                message.style.display = 'block';
+                
+                // Reset button
+                submitBtn.disabled = false;
+                btnText.textContent = 'Submit Form';
+                
+                console.error('Error:', error);
+            });
+        });
+
+        // Real-time validation feedback
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('invalid', function() {
+                this.style.borderColor = '#d32f2f';
+            });
+            
+            input.addEventListener('input', function() {
+                if(this.validity.valid) {
+                    this.style.borderColor = '#0BA039';
+                } else {
+                    this.style.borderColor = '#e0e0e0';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
